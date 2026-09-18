@@ -14,7 +14,7 @@ if (!fs.existsSync(imageDir)) {
 
 // Storage for Resume
 const resumeStorage = multer.diskStorage({
-  destination: './uploads/resumes/',
+  destination: resumeDir,
   filename: function(req, file, cb) {
     cb(null, `${req.user.id}-${Date.now()}${path.extname(file.originalname)}`);
   }
@@ -22,7 +22,7 @@ const resumeStorage = multer.diskStorage({
 
 // Storage for Image
 const imageStorage = multer.diskStorage({
-  destination: './uploads/images/',
+  destination: imageDir,
   filename: function(req, file, cb) {
     cb(null, `${req.user.id}-${Date.now()}${path.extname(file.originalname)}`);
   }
