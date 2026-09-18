@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Bell, Search, Check, Clock, Mail, ChevronDown, User, LogOut, Sun, Moon } from 'lucide-react';
+import { Bell, Search, Check, Clock, Mail, ChevronDown, User, LogOut, Sun, Moon, Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import axios from 'axios';
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick }) => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [notifications, setNotifications] = useState([]);
@@ -58,14 +58,25 @@ const Navbar = () => {
   };
 
   return (
-    <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-50">
-      <div className="relative w-96">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-        <input
-          type="text"
-          placeholder="Search for students, companies..."
-          className="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
-        />
+    <header className="h-16 md:h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 sticky top-0 z-30">
+      <div className="flex items-center gap-4">
+        {/* Mobile Menu Button */}
+        <button 
+          onClick={onMenuClick}
+          className="p-2 -ml-2 md:hidden text-slate-500 hover:text-slate-800 hover:bg-slate-50 rounded-lg"
+        >
+          <Menu size={24} />
+        </button>
+
+        {/* Search Bar - Hidden on mobile */}
+        <div className="relative w-72 lg:w-96 hidden md:block">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <input
+            type="text"
+            placeholder="Search for students, companies..."
+            className="w-full pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm"
+          />
+        </div>
       </div>
 
       <div className="flex items-center bg-white rounded-full px-2 py-1.5 shadow-sm border border-slate-200">
@@ -94,7 +105,7 @@ const Navbar = () => {
           {showNotifications && (
             <>
               <div className="fixed inset-0 z-40" onClick={() => setShowNotifications(false)}></div>
-              <div className="absolute right-0 mt-4 w-80 bg-white rounded-2xl shadow-premium border border-slate-100 z-50 overflow-hidden transform origin-top-right">
+              <div className="absolute right-[-40px] md:right-0 mt-4 w-[calc(100vw-32px)] sm:w-80 bg-white rounded-2xl shadow-premium border border-slate-100 z-50 overflow-hidden transform origin-top-right">
                 <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                   <h3 className="font-bold text-slate-900">Notifications</h3>
                   {unreadCount > 0 && (

@@ -93,22 +93,22 @@ const AdminDashboard = () => {
     <AdminLayout>
       <div className="space-y-8">
         {/* Page Header */}
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-2xl font-bold text-slate-900 font-display">Dashboard Overview</h2>
             <p className="text-slate-500">Welcome back, here's what's happening today.</p>
           </div>
           
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <button 
               onClick={() => setShowExportOptions(!showExportOptions)} 
-              className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary-hover transition-all"
+              className="flex items-center justify-center w-full sm:w-auto gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary-hover transition-all"
             >
               <Download size={18} /> Export Reports
             </button>
             
             {showExportOptions && (
-              <div className="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-slate-100 p-5 z-50">
+              <div className="absolute right-0 sm:right-0 left-0 sm:left-auto mt-3 w-full sm:w-80 bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] border border-slate-100 p-5 z-50">
                 <h3 className="font-bold text-slate-900 mb-3 text-sm">Generate Report</h3>
                 
                 <div className="mb-4">
@@ -147,16 +147,18 @@ const AdminDashboard = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-6">
           {stats.map((stat, index) => (
-            <div key={index} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all group">
-              <div className={`w-12 h-12 ${stat.color} text-white rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                {React.cloneElement(stat.icon, { size: 24 })}
+            <div key={index} className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all group flex flex-col justify-between">
+              <div>
+                <div className={`w-10 h-10 md:w-12 md:h-12 ${stat.color} text-white rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+                  {React.cloneElement(stat.icon, { size: 20, className: "md:w-6 md:h-6" })}
+                </div>
+                <p className="text-xs md:text-sm font-medium text-slate-500">{stat.label}</p>
               </div>
-              <p className="text-sm font-medium text-slate-500">{stat.label}</p>
-              <div className="flex items-end justify-between mt-1">
-                <h3 className="text-2xl font-bold text-slate-900">{stat.value}</h3>
-                <span className={`text-xs font-semibold px-2 py-1 rounded-lg ${
+              <div className="flex flex-col xl:flex-row xl:items-end justify-between mt-2 gap-2">
+                <h3 className="text-xl md:text-2xl font-bold text-slate-900">{stat.value}</h3>
+                <span className={`text-[10px] md:text-xs font-semibold px-2 py-1 rounded-lg w-fit ${
                     stat.trend.includes('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'
                 }`}>
                   {stat.trend}
