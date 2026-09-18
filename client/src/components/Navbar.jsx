@@ -57,6 +57,8 @@ const Navbar = ({ onMenuClick }) => {
     }
   };
 
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+
   return (
     <header className="h-16 md:h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 sticky top-0 z-30">
       <div className="flex items-center gap-4">
@@ -93,7 +95,10 @@ const Navbar = ({ onMenuClick }) => {
         {/* Bell Icon with existing Notifications Logic */}
         <div className="relative">
           <button 
-            onClick={() => setShowNotifications(!showNotifications)}
+            onClick={() => {
+              setShowNotifications(!showNotifications);
+              setShowProfileDropdown(false);
+            }}
             className={`relative p-2 rounded-full transition-all ${showNotifications ? 'bg-slate-100 text-slate-800' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'}`}
           >
             <Bell size={20} />
@@ -164,8 +169,14 @@ const Navbar = ({ onMenuClick }) => {
         <div className="w-[1px] h-5 bg-slate-200 mx-1"></div>
 
         {/* User Profile Dropdown */}
-        <div className="relative group">
-          <button className="flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full hover:bg-slate-50 transition-all">
+        <div className="relative">
+          <button 
+            onClick={() => {
+              setShowProfileDropdown(!showProfileDropdown);
+              setShowNotifications(false);
+            }}
+            className="flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full hover:bg-slate-50 transition-all"
+          >
             {user?.profileImageURL ? (
               <img src={user.profileImageURL} alt="Profile" className="w-8 h-8 rounded-full object-cover" />
             ) : (
@@ -173,11 +184,14 @@ const Navbar = ({ onMenuClick }) => {
                 {user?.name?.[0] || 'A'}
               </div>
             )}
-            <ChevronDown size={16} className="text-slate-400" />
+            <ChevronDown size={16} className={`text-slate-400 transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} />
           </button>
           
           {/* Dropdown Menu */}
-          <div className="absolute right-0 mt-3 w-56 bg-white border border-slate-100 rounded-2xl shadow-premium opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 transform origin-top-right scale-95 group-hover:scale-100 overflow-hidden">
+          {showProfileDropdown && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={() => setShowProfileDropdown(false)}></div>
+              <div className="absolute right-0 mt-3 w-56 bg-white border border-slate-100 rounded-2xl shadow-premium z-50 transform origin-top-right overflow-hidden">
             <div className="p-4 border-b border-slate-100">
               <p className="text-sm font-bold text-slate-900 truncate">{user?.name || 'Admin'}</p>
               <p className="text-xs text-slate-500 truncate capitalize">{user?.role || 'Administrator'}</p>
@@ -192,8 +206,9 @@ const Navbar = ({ onMenuClick }) => {
               </RouterLink>
             </div>
           </div>
-        </div>
-
+        </>
+      )}
+    </div>
       </div>
     </header>
   );

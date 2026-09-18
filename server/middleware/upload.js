@@ -1,5 +1,16 @@
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
+
+// Ensure upload directories exist
+const resumeDir = path.join(__dirname, '../uploads/resumes');
+const imageDir = path.join(__dirname, '../uploads/images');
+if (!fs.existsSync(resumeDir)) {
+  fs.mkdirSync(resumeDir, { recursive: true });
+}
+if (!fs.existsSync(imageDir)) {
+  fs.mkdirSync(imageDir, { recursive: true });
+}
 
 // Storage for Resume
 const resumeStorage = multer.diskStorage({
