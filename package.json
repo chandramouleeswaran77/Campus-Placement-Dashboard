@@ -1,0 +1,21 @@
+{
+  "name": "campus-placement-dashboard",
+  "version": "1.0.0",
+  "description": "Campus Placement Management System",
+  "main": "server/server.js",
+  "scripts": {
+    "build": "npm install --prefix server && npm install --prefix client && npm run build --prefix client",
+    "start": "node server/server.js",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client"
+  },
+  "keywords": [
+    "mern",
+    "placement",
+    "dashboard",
+    "react",
+    "node"
+  ],
+  "author": "chandramouleeswaran77",
+  "license": "ISC"
+}

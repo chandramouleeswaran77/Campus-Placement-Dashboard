@@ -15,6 +15,8 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/placementDB
 
 const app = express();
 
+const path = require('path');
+
 // Body parser
 app.use(express.json());
 
@@ -24,13 +26,18 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Security headers
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
 
 // Enable CORS
 app.use(cors());
 
 // Set static folder
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Mount routers
 app.use('/api/auth', require('./routes/auth'));
@@ -45,8 +52,17 @@ app.use('/api/reports', require('./routes/reports'));
 app.use('/api/resume', require('./routes/resume'));
 app.use('/api/analytics', require('./routes/analytics'));
 
+// Serve frontend in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
+  });
+}
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
+
