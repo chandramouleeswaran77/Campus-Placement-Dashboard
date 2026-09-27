@@ -191,6 +191,4 @@ npm run seed
 
 ---
 
-## 👥 Team
 
-Built with ❤️ by the PLACEMATE team.
